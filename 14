@@ -5,7 +5,7 @@
     error_reporting(0);
     session_start();
     if (!$_SESSION["id"]) {
-        echo "請登入帳號";
+        echo "請登入帳號";        檢查 session 裡有沒有「id」這個變數
         echo "<meta http-equiv=REFRESH content='3, url=2.login.html'>";
     }
     else{    
@@ -14,7 +14,9 @@
                 帳號：<input type=text name=id><br>
                 密碼：<input type=text name=pwd><p></p>
                 <input type=submit value=新增> <input type=reset value=清除>
-            </form>
+            </form>  輸入「帳號」和「密碼」點新增會把資料送到 15.user_add.php 去處理，點清除可以把輸入內容清空
+
+
         ";
     }
 ?>

@@ -1,23 +1,15 @@
 <html>
-    <head><title>明新科技大學資訊管理系</title> #title：設定瀏覽器標籤的標題為明新科技大學資訊管理系。 meta charset=：設定頁面字元編碼為 UTF-8，讓中文能正確顯示。 link：載入 FlexSlider 的 CSS，讓圖片輪播有樣式。
-
-<script>：載入 jQuery 以及 FlexSlider 的 JavaScript，實現輪播功能。
-
-內嵌的 <script> 是在視窗載入完後，啟動 .flexslider 元件，設定輪播方式為「slide」及從右往左（rtl: true）。
-
-<style> 內寫了所有 CSS，用來美化與排版頁面元素。
-
-
-    <meta charset="utf-8">
+    <head><title>明新科技大學資訊管理系</title>
+    <meta charset="utf-8"> #設定標題為明新科技大學資訊管理系，UTF-8 編碼支援繁體中文
     <link href="https://cdn.bootcss.com/flexslider/2.6.3/flexslider.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/flexslider/2.6.3/jquery.flexslider-min.js"></script>        
+    <script src="https://cdn.bootcss.com/flexslider/2.6.3/jquery.flexslider-min.js"></script> #引入圖片輪播套件 flexslider 的 CSS 和 JS，使用 jQuery 庫       
     <script>
         $(window).load(function() {
             $('.flexslider').flexslider({
                 animation: "slide",
                 rtl: true
-            });
+            });  #頁面載入後啟動圖片輪播功能，設定為滑動（slide）動畫，rtl: true 表示從右往左輪播
         });
     </script>
     <style>
@@ -29,7 +21,7 @@
         /* top */
         .top{
              background-color: white;
-        }
+        } #使用 Flexbox 將 Logo 與登入區塊對齊，登入區為 label 點擊後顯示 <div id="login">
         .top .container{
             display: flex;
             align-items: center;
@@ -103,7 +95,7 @@
 
         /* slider */
         .slider{
-            background-color: black;
+            background-color: black; #使用 Flexslider 套件實作圖片幻燈片輪播
         }
         /* banner*/
         .banner{
@@ -209,8 +201,33 @@
             height: 20%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
             background-color: rgba(255,255,255,0.9); /* Black w/ opacity */
-            padding-top: 50px;  #這裡設定了整體字體顏色、排版、導覽列、下拉選單、輪播區域、師資介紹、聯絡資訊、頁尾等樣式。modal 是登入視窗的樣式，預設隱藏並且置中。
-        }  /*登入畫面css*/
+            padding-top: 50px;
+        }  /*登入畫面css*/ #使用 PHP 連接資料庫 db4free.net，從 bulletin 表抓取資料並以表格顯示
+        /*佈告欄*/
+        .bulletin{
+            display: block;
+            justify-content: center;
+            background-color: rgb(255,204,153);
+            padding: 30px 0;
+
+        }
+        .bulletin h1{
+            padding:10px;
+        }
+        .bulletin table{
+            border-collapse:collapse;
+            font-family: 微軟正黑體;
+            font-size:16px; 
+            border:1px solid #000;
+        }
+        .bulletin table th{
+            background-color: #abdcff;
+            color: #ffffff;
+        }
+        .bulletin table td{
+            background-color: #ffffff;
+            color: #0396ff;
+        }
     </style>
     </head>
     <body>
@@ -231,7 +248,7 @@
                         帳號：<input type=text name="id"><br />
                         密碼：<input type=password name="pwd"><p></p>
                         <input type=submit value="登入"> <input type=reset value="清除">
-                    </form> #左邊是校徽圖片與系名。右邊有連結明新科大，明新管理學院和一個登入標籤。登入點擊後會顯示隱藏的登入視窗.modal，包含帳號、密碼欄位與送出按鈕。
+                    </form>
                   </div>  
                   <!---登入畫面-->
                 </div>
@@ -260,13 +277,39 @@
                 </ul>
             </div>
         </div>
+        <!---佈告欄--->
+        <div class="bulletin">
+           <h1>最新公告</h1>
+            <?php
+                $conn=mysqli_connect("db4free.net", "immust", "immustimmust", "immust");
+                $result=mysqli_query($conn, "select * from bulletin");
+                echo "<table border=2><tr><th>佈告編號</th><th>佈告類別</th><th>標題</th><th>佈告內容</th><th>發佈時間</th></tr>";
+                while ($row=mysqli_fetch_array($result)){
+                    echo "<tr><td>";
+                    echo $row["bid"];
+                    echo "</td><td>";
+                    if ($row["type"]==1) echo "系上公告";  
+                    if ($row["type"]==2) echo "獲獎資訊"; 
+                    if ($row["type"]==3) echo "徵才資訊"; 
+                    echo "</td><td>"; 
+                    echo $row["title"];
+                    echo "</td><td>";
+                    echo $row["content"]; 
+                    echo "</td><td>";
+                    echo $row["time"];
+                    echo "</td></tr>";
+                }
+                echo "</table>";
+            ?>
+        </div>
+        <!---佈告欄--->
         <div class="banner" id="introduction">
             <h1>系所簡介</h1>
             <h1>歷年教育部評鑑皆榮獲一等</h1>
             <h1>明新科技大學資訊管理系</h1>
             <h1>全國私立科大第一資管系</h1>
         </div>
-        <div class="faculty" id="faculty">
+        <div class="faculty" id="faculty"> #使用下拉式選單功能顯示教師名單
             <h2>師資介紹</h2>
             <div class="container">
                 <a class="teacher" href="">
@@ -284,7 +327,7 @@
             </div>
         </div>
         <div class="contact" id="about">
-                <h2>相關資訊</h2>  #水平導覽列，包含首頁、系所簡介、成員簡介（有下拉選單）、相關資訊。 下拉選單在滑鼠移到成員簡介時展開。
+                <h2>相關資訊</h2>
                 <div class="infos">
                     <div class="left">
                         <b>明新科技大學管理學院大樓二樓</b>
